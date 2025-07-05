@@ -1,6 +1,246 @@
-/******* Change Box Model ***************/
+/******* Box Model Fix ***************/
 *,
 *:before,
 *:after {
   box-sizing: border-box;
 }
+
+/******* Root Variables ***************/
+:root {
+  --primary-color: #1E90FF;
+  --secondary-color: #f5f5f5;
+  --text-color: #222;
+  --accent-color: #ff4500;
+}
+
+/******* Base Styling ***************/
+body {
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: url('/images/site/checkerboard.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: var(--text-color);
+}
+
+
+main {
+  padding: 1rem;
+}
+
+h1, h2 {
+  color: #222;
+  margin-top: 0;
+}
+
+/******* Wrapper ***************/
+.wrapper {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 3px solid var(--primary-color);
+  border-radius: 12px;
+  background-color: #f5f5f5;
+}
+
+/******* Header ***************/
+#top-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem auto;
+  max-width: 1000px;
+  background-color: #f5f5f5;
+  
+}
+
+.siteName a {
+  text-decoration: none;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+#tools a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 600;
+  border: 1px solid var(--primary-color);
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+#tools a:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/******* Navigation ***************/
+.site-nav {
+  margin: 0 auto 1rem auto;
+  padding: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  max-width: 1000px;
+  background-color: #f5f5f5;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.site-nav li a {
+  text-decoration: none;
+  color: var(--text-color);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.site-nav li a:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.page-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem;
+  border: 3px solid var(--primary-color);
+  border-radius: 12px;
+  background-color: #f5f5f5;
+}
+
+
+/******* Hero Section ***************/
+
+.hero {
+  position: relative;
+  background-image: url('/images/vehicles/delorean-tn.jpg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px; /* reasonable height for mobile */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.hero-text {
+  background-color: transparent;
+  position: relative; /* or absolute if you want more control */
+  padding: 1rem;
+  border: 2px solid var(--primary-color);
+  border-radius: 10px;
+  max-width: 90%;
+  color: #222;
+  margin: 0; /* Reset margin to keep it fixed */
+}
+
+
+.hero-text h2,
+.hero-text ul,
+.hero-text li {
+  color: #222;
+}
+
+.hero-text .button {
+  display: inline-block;
+  padding: 0.7em 1.2em;
+  margin-top: 1rem;
+  background: var(--accent-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+
+/******* Features Section ***************/
+.features {
+  margin-top: 3rem;
+}
+
+.upgrades-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+figure {
+  margin: 0;
+  text-align: center;
+}
+
+figure img {
+  max-width: 250px;
+  background: #00bfe7;
+  padding: 0.5rem;
+  border: 4px solid #1E90FF;
+  border-radius: 5px;
+  
+}
+
+figure figcaption {
+  margin-top: 0.3rem;
+  font-weight: bold;
+}
+
+.reviews ul {
+  list-style-type: disc;
+  padding-left: 1.2rem;
+}
+
+.reviews li {
+  margin-bottom: 0.7rem;
+}
+
+/******* Desktop Layout ***************/
+@media screen and (min-width: 768px) {
+  .hero {
+  height: 400px; /* larger for desktop */
+  
+}
+
+.hero-text {
+  max-width: 400px;
+  margin-left: 5rem;
+}
+
+
+  .features {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+    margin-top: 3rem;
+  }
+
+  .upgrades, .reviews {
+    flex: 1;
+  }
+
+  .upgrades-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .page-container {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  
+}    
