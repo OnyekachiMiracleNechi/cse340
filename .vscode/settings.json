@@ -1,0 +1,19 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": {
+                    "rejectUnauthorized": true
+                }
+            },
+            "previewLimit": 50,
+            "server": "dpg-d1pcl8idbo4c738ao6i0-a.virginia-postgres.render.com",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "cse340database2",
+            "database": "cse340db2_hunr",
+            "username": "cse340db2",
+            "password": "1aIoZsyGIRQmwOLEznOR5I3PqO4a8tXm"
+        }
+    ]
+}
