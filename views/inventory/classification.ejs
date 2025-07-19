@@ -1,0 +1,14 @@
+<!-- Classification View -->
+
+<!-- Heading Section -->
+<% if (title) { %>
+  <h1><%= title %></h1>
+<% } else {
+  res.redirect('/')
+} %>
+
+<!-- Message Block (commented out for now) -->
+<%# messages() %>
+
+<!-- Inventory Items Display -->
+<%- grid %>

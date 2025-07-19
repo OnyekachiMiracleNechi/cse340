@@ -244,3 +244,68 @@ figure figcaption {
 
   
 }    
+
+
+/******* Inventory Grid Styling *******/
+
+/* Grid container for the vehicle inventory */
+#inv-display {
+  display: grid; /* Use CSS Grid for layout */
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); /* Responsive columns */
+  gap: 2rem; /* Spacing between items */
+  padding: 1rem; /* Space inside the container */
+  margin-top: 2rem; /* Space above the grid */
+}
+
+/* Each inventory item (vehicle card) */
+#inv-display li {
+  list-style: none; /* Remove bullet points */
+  background-color: white; /* White card background */
+  border: 2px solid var(--primary-color); /* Border using your primary color variable */
+  border-radius: 10px; /* Rounded corners */
+  overflow: hidden; /* Clip overflowing content (e.g., images) */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover animations */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* Hover effect for inventory items */
+#inv-display li:hover {
+  transform: scale(1.03); /* Slightly grow the card */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}
+
+/* Vehicle image styling */
+#inv-display img {
+  width: 100%; /* Image fills the card width */
+  height: auto; /* Maintain aspect ratio */
+  display: block; /* Removes small gaps below images */
+  border-bottom: 1px solid #ccc; /* Separator between image and text */
+}
+
+/* Container for name and price */
+.namePrice {
+  padding: 0.8rem 1rem; /* Inner spacing around the text */
+  text-align: center; /* Center-align text */
+}
+
+/* Vehicle name */
+.namePrice h2 {
+  font-size: 1.1rem; /* Slightly larger text */
+  margin: 0.5rem 0; /* Space above and below */
+  color: var(--primary-color); /* Primary color for headings */
+}
+
+/* Vehicle price */
+.namePrice span {
+  display: block; /* Ensure it takes full width */
+  font-size: 1rem; /* Base font size */
+  color: var(--accent-color); /* Accent color for price */
+  font-weight: bold; /* Emphasize price */
+}
+
+/* Responsive adjustment for very small screens */
+@media screen and (max-width: 480px) {
+  #inv-display {
+    grid-template-columns: 1fr; /* Stack items in a single column */
+  }
+}
