@@ -309,3 +309,70 @@ figure figcaption {
     grid-template-columns: 1fr; /* Stack items in a single column */
   }
 }
+
+
+
+/******* Vehicle Detail Page Styling ********/
+.vehicle-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 3px solid var(--primary-color);
+  border-radius: 12px;
+  background-color: var(--secondary-color);
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+}
+
+.vehicle-detail img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 10px;
+  border: 2px solid var(--primary-color);
+  margin: 0 auto;
+  display: block;
+}
+
+.vehicle-detail h1 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.vehicle-detail ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.vehicle-detail li {
+  margin-bottom: 0.6rem;
+}
+
+.vehicle-detail li strong {
+  color: var(--accent-color);
+}
+
+/* Larger layout for desktops */
+@media screen and (min-width: 768px) {
+  .vehicle-detail {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .vehicle-detail img {
+    margin: 0;
+    width: 50%;
+    height: auto;
+  }
+
+  .vehicle-detail ul {
+    padding-left: 2rem;
+    width: 50%;
+  }
+}
