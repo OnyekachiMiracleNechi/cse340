@@ -376,3 +376,40 @@ figure figcaption {
     width: 50%;
   }
 }
+
+/* Account Page Styling */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+}
+
+form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+form button {
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #007BFF; /* Primary color (blue) */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Hover state */
+form button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+

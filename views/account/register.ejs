@@ -1,0 +1,60 @@
+
+
+<main>
+  <h1><%= title %></h1>
+  <% if (success && success.length > 0) { %>
+  <% success.forEach(msg => { %>
+    <div class="success"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+<% if (errors && errors.length > 0) { %>
+  <% errors.forEach(msg => { %>
+    <div class="error"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+<% if (message && message.length > 0) { %>
+  <% message.forEach(msg => { %>
+    <div class="notice"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+
+
+  <% if (errors) { %>
+  <ul class="notice">
+ <% errors.array().forEach(error => { %>
+   <li><%= error.msg %></li>
+<%  }) %>
+ </ul>
+<% } %>
+
+  <form action="/account/register" method="post">
+  <label for="account_firstname">First Name</label>
+  <input type="text" name="account_firstname" id="accountFirstname" required value="<%= locals.account_firstname %>">
+
+  <label for="account_lastname">Last Name</label>
+  <input type="text" name="account_lastname" id="accountlastname" required value="<%= locals.account_lastname %>">
+
+  <label for="account_email">Email</label>
+  <input type="email" name="account_email" id="accountemail" required value="<%= locals.account_email %>">
+
+  <label for="password">Password</label>
+  <input type="password" id="password" name="account_password" required
+    pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$"
+    title="Must be at least 12 characters and include a capital letter, number, and special character.">
+
+  <button type="button" onclick="togglePassword()">Show/Hide Password</button>
+
+  <button type="submit">Register</button>
+</form>
+
+</main>
+
+<script>
+function togglePassword() {
+  const password = document.getElementById("password")
+  password.type = password.type === "password" ? "text" : "password"
+}
+</script>

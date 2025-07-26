@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <%- include('../partials/head') %>
+  <body>
+    <div class="page-container">
+      
+      <main>
+        <h1><%= title %></h1>
+
+        
+        
+    <!-- Flash message -->
+        
+  <% if (success && success.length > 0) { %>
+  <% success.forEach(msg => { %>
+    <div class="success"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+
+
+<% if (message && message.length > 0) { %>
+  <% message.forEach(msg => { %>
+    <div class="notice"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+
+
+  <% if (errors && errors.length > 0) { %>
+  <ul class="flash error">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+        
+
+        <!-- Login form -->
+        <form id="loginForm" action="/account/login" method="post">
+          <label for="account_email">Email:</label>
+          <input type="email" name="account_email" id="accountemail" required value="<%= account_email %>">
+
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required
+          pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{12,}$"
+          title="Must be at least 12 characters and include a capital letter, number, and special character.">
+
+
+          <button type="submit">Login</button>
+        </form>
+
+        <p>Not a member? <a href="/account/register">Create an account</a></p>
+      </main>
+    </div>
+  </body>
+</html>

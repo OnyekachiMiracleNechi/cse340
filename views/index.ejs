@@ -4,7 +4,22 @@
 
 <main>
   <!-- Main heading welcoming users to the site -->
-  <h1>Welcome to CSE Motors!</h1>
+  <h1>Welcome to CSE Motors!
+   
+      <% if (success && success.length > 0) { %>
+      <div class="alert alert-success"><%= success %></div>
+    <% } %>
+
+    <% if (errors && errors.length > 0) { %>
+      <div class="alert alert-danger"><%= errors %></div>
+    <% } %>
+
+    <% if (message && message.length > 0) { %>
+      <div class="alert alert-info"><%= message %></div>
+    <% } %>
+
+      
+  </h1>
 
   <!-- This is the "hero section" – a big, eye-catching area at the top of the page -->
   <section class="hero">
