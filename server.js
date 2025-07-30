@@ -1,12 +1,8 @@
 /* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
+ * Primary file to control the project.
  *******************************************/
-/* ***********************
- * Require Statements
- *************************/
 const express = require("express")
-const app = express() // ✅ define app EARLY
+const app = express()
 const expressLayouts = require("express-ejs-layouts")
 const bodyParser = require("body-parser")
 const session = require("express-session")
@@ -16,8 +12,7 @@ const env = require("dotenv").config()
 const pool = require("./database/")
 const utilities = require("./utilities/")
 
-
-// Route and Controller Imports
+// Route imports
 const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
@@ -27,7 +22,7 @@ const accountRoute = require("./routes/accountRoute")
  * Middleware
  *************************/
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Session Middleware
 app.use(
@@ -39,18 +34,19 @@ app.use(
     secret: process.env.SESSION_SECRET || "super_secret",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Set true only if using HTTPS
+    cookie: { secure: false },
   })
 )
 
-// Flash Messages Middleware
+// Flash Messages
 app.use(flash())
 
-// Custom middleware to expose flash messages to all views
+// Make flash messages and user session available in all views
 app.use((req, res, next) => {
   res.locals.message = req.flash("message")
   res.locals.errors = req.flash("errors")
   res.locals.success = req.flash("success")
+  res.locals.accountData = req.session.account
   next()
 })
 
@@ -60,11 +56,11 @@ app.use((req, res, next) => {
 app.use(express.static("public"))
 
 /* ***********************
- * Template Engine
+ * View Engine
  *************************/
 app.set("view engine", "ejs")
 app.use(expressLayouts)
-app.set("layout", "layouts/layout") // Uses /views/layouts/layout.ejs
+app.set("layout", "layouts/layout")
 
 /* ***********************
  * Routes
@@ -72,12 +68,12 @@ app.set("layout", "layouts/layout") // Uses /views/layouts/layout.ejs
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 app.use("/account", accountRoute)
-// app.use("/", static) // Optional
+// app.use("/", static) // optional if you want to serve other static routes
 
 /* ***********************
- * 404 Handler
+ * 404 Not Found Handler
  *************************/
-app.use(async (req, res, next) => {
+app.use((req, res, next) => {
   next({ status: 404, message: "Congrats! You broke it." })
 })
 
@@ -85,13 +81,19 @@ app.use(async (req, res, next) => {
  * Global Error Handler
  *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
-  const message = err.status == 404
-    ? err.message
-    : "Oh no! There was a crash. Maybe try a different route?"
-  console.error(`Error at: "${req.originalUrl}": ${err.message}`)
-  res.status(err.status || 500).render("errors/error", {
-    title: err.status || "Server Error",
+  const nav = await utilities.getNav()
+  const status = err.status || 500
+  const message =
+    status === 404
+      ? err.message
+      : "Oh no! There was a crash. Maybe try a different route?"
+
+  console.error(`\nError at: "${req.originalUrl}"`)
+  console.error("Message:", err.message)
+  console.error("Stack:", err.stack)
+
+  res.status(status).render("errors/error", {
+    title: status,
     message,
     nav,
   })
