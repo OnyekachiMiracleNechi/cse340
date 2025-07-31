@@ -90,6 +90,74 @@ const checkInventoryData = async (req, res, next) => {
   next()
 }
 
+// public/js/inventory-validation.js
+
+function isEmpty(value) {
+  return value.trim() === "";
+}
+
+function isPositiveNumber(value) {
+  return !isNaN(value) && Number(value) > 0;
+}
+
+function isValidYear(value) {
+  const year = Number(value);
+  const currentYear = new Date().getFullYear();
+  return year >= 1900 && year <= currentYear + 1;
+}
+
+function attachInventoryFormValidation() {
+  const form = document.getElementById("addInventoryForm");
+
+  if (!form) return;
+
+  form.addEventListener("submit", function (event) {
+    let errors = [];
+
+    const make = document.getElementById("inv_make").value;
+    const model = document.getElementById("inv_model").value;
+    const year = document.getElementById("inv_year").value;
+    const desc = document.getElementById("inv_description").value;
+    const image = document.getElementById("inv_image").value;
+    const thumb = document.getElementById("inv_thumbnail").value;
+    const price = document.getElementById("inv_price").value;
+    const miles = document.getElementById("inv_miles").value;
+    const color = document.getElementById("inv_color").value;
+
+    if (isEmpty(make)) errors.push("Make is required.");
+    if (isEmpty(model)) errors.push("Model is required.");
+    if (!isValidYear(year)) errors.push("Enter a valid year between 1900 and next year.");
+    if (isEmpty(desc)) errors.push("Description is required.");
+    if (isEmpty(image)) errors.push("Image path is required.");
+    if (isEmpty(thumb)) errors.push("Thumbnail path is required.");
+    if (!isPositiveNumber(price)) errors.push("Price must be a positive number.");
+    if (!isPositiveNumber(miles)) errors.push("Miles must be a positive number.");
+    if (isEmpty(color)) errors.push("Color is required.");
+
+    if (errors.length > 0) {
+      event.preventDefault();
+
+      // Remove old errors
+      const oldList = document.querySelector(".client-errors");
+      if (oldList) oldList.remove();
+
+      // Add new error list
+      const ul = document.createElement("ul");
+      ul.classList.add("client-errors");
+      ul.style.color = "red";
+      errors.forEach(err => {
+        const li = document.createElement("li");
+        li.textContent = err;
+        ul.appendChild(li);
+      });
+
+      form.parentNode.insertBefore(ul, form);
+    }
+  });
+}
+
+
+
 
 module.exports = {
   classificationRules,
