@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+</head>
+<body>
+
+  <h1>Account Management</h1>
+
+  <% if (accountData) { %>
+    <p>Welcome, <%= accountData.account_firstname %> <%= accountData.account_lastname %>!</p>
+    <p>You are logged in as: <%= accountData.account_email %></p>
+    <p>Account type: <%= accountData.account_type %></p>
+  <% } else { %>
+    <p>Welcome to your account.</p>
+  <% } %>
+
+  <% if (success && success.length > 0) { %>
+    <% success.forEach(msg => { %>
+      <div class="success"><%= msg %></div>
+    <% }) %>
+  <% } %>
+
+  <% if (message && message.length > 0) { %>
+    <% message.forEach(msg => { %>
+      <div class="notice"><%= msg %></div>
+    <% }) %>
+  <% } %>
+
+  <% if (errors && errors.length > 0) { %>
+    <ul class="flash error">
+      <% errors.forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <ul>
+    <li><a href="/inv/add-classification">Add New Classification</a></li>
+    <li><a href="/inv/add-inventory">Add New Inventory</a></li>
+    <li><a href="/account/logout">Logout</a></li>
+  </ul>
+</body>
+</html>

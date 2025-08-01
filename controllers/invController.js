@@ -51,11 +51,13 @@ invController.buildDetailView = async function (req, res, next) {
  * ************************** */
 invController.buildManagementView = async function (req, res) {
   let nav = await utilities.getNav()
+  const classificationSelect = await utilities.buildClassificationList()
   const messages = req.flash()
   res.render("inventory/management", {
     title: "Inventory Management",
     nav,
     messages,
+    classificationSelect,
   })
 }
 
@@ -162,7 +164,7 @@ invController.addInventory = async function (req, res) {
     }
   } catch (error) {
     console.error("Add Inventory Error:", error)
-    const classificationList = await utilities.buildClassificationList(classification_id)
+    const classificationList = await utilities.buildClassificationList(inv_id)
     req.flash("error", "An error occurred while adding inventory.")
     res.status(500).render("inventory/add-inventory", {
       title: "Add Inventory",
@@ -177,6 +179,140 @@ invController.addInventory = async function (req, res) {
       inv_miles,
       inv_color,
       errors: [{ msg: error.message }]
+    })
+  }
+}
+
+
+
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invController.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id)
+  const invData = await invModel.getInventoryByClassificationId(classification_id)
+  if (invData[0].inv_id) {
+    return res.json(invData)
+  } else {
+    next(new Error("No data returned"))
+  }
+}
+
+
+/* ***************************
+ *  Build edit inventory view
+ * ************************** */
+invController.editInventoryView = async function (req, res, next) {
+  const inv_id = parseInt(req.params.inv_id)
+  let nav = await utilities.getNav()
+  const itemData = await invModel.getInventoryById(inv_id)
+  const classificationSelect = await utilities.buildClassificationList(itemData.classification_id)
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+  res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id
+  })
+}
+
+
+
+
+
+invController.updateInventory = async function (req, res) {
+  let nav = await utilities.getNav()
+  console.log("Request body:", req.body)
+
+  const parsedInvId = Array.isArray(req.body.inv_id)
+    ? parseInt(req.body.inv_id[0])
+    : parseInt(req.body.inv_id)
+
+  console.log("Parsed inv_id:", parsedInvId)
+
+  const {
+    classification_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+  } = req.body
+
+  try {
+    console.log("Calling updateInventory with:")
+    console.log({
+      parsedInvId,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+    })
+
+    const updateResult = await invModel.updateInventory(
+      parsedInvId,
+      inv_make,
+      inv_model,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_year,
+      inv_miles,
+      inv_color,
+      classification_id
+    )
+
+    if (updateResult) {
+      const itemName = `${inv_make} ${inv_model}`
+      req.flash("notice", `The ${itemName} was successfully updated.`)
+      return res.redirect("/inv/")
+    } else {
+      throw new Error("Update failed")
+    }
+  } catch (error) {
+    console.error("❌ Update Inventory Error:" ,error.message)
+
+    const classificationSelect = await utilities.buildClassificationList(classification_id)
+    const itemName = `${inv_make} ${inv_model}`
+
+    return res.status(500).render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      classificationSelect,
+      errors: [{ msg: error.message }],
+      inv_id: parsedInvId,
+      classification_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color
     })
   }
 }

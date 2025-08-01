@@ -259,3 +259,14 @@ UPDATE inventory
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
 
+
+
+-- 10 Change Happy's account to "Employee"
+UPDATE public.account
+SET account_type = 'Employee'
+WHERE account_email = 'happy@340.edu';
+
+--11 Change Manager's account to "Admin"
+UPDATE public.account
+SET account_type = 'Admin'
+WHERE account_email = 'manager@340.edu';

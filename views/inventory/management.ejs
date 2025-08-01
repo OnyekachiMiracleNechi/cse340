@@ -1,42 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-
-  <title><%= title %></title>
-</head>
-<body>
- 
-
+<main class="inventory-container">
   <h1>Inventory Management</h1>
 
-  <% if (success && success.length > 0) { %>
-  <% success.forEach(msg => { %>
-    <div class="success"><%= msg %></div>
-  <% }) %>
-<% } %>
-
-
-
-<% if (message && message.length > 0) { %>
-  <% message.forEach(msg => { %>
-    <div class="notice"><%= msg %></div>
-  <% }) %>
-<% } %>
-
-
-
-  <% if (errors && errors.length > 0) { %>
-  <ul class="flash error">
-    <% errors.forEach(error => { %>
-      <li><%= error.msg %></li>
+  <% if (messages.notice) { %>
+  <div class="notice flash">
+    <% messages.notice.forEach(function(msg) { %>
+      <p><%= msg %></p>
     <% }) %>
-  </ul>
+  </div>
+<% } %>
+
+<% if (messages.success) { %>
+  <div class="success flash">
+    <% messages.success.forEach(function(msg) { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
+<% } %>
+
+<% if (messages.error) { %>
+  <div class="error flash">
+    <% messages.error.forEach(function(msg) { %>
+      <p><%= msg %></p>
+    <% }) %>
+  </div>
 <% } %>
 
 
-  <ul>
+  <ul class="inventory-links">
     <li><a href="/inv/add-classification">Add New Classification</a></li>
     <li><a href="/inv/add-inventory">Add New Inventory</a></li>
   </ul>
-</body>
-</html>
+
+  <h2>Manage Inventory</h2>
+  <p>Select a classification from the list to see available inventory items.</p>
+
+  <div class="classification-select">
+    <%- classificationSelect %>
+  </div>
+
+  <table id="inventoryDisplay"></table>
+
+  <noscript>JavaScript must be enabled to use this page.</noscript>
+</main>
+
+<script src="/js/inventory.js"></script>

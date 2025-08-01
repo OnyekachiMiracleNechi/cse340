@@ -1,4 +1,4 @@
-const { body, validationResult } = require("express-validator")
+const { body, validationResult, check } = require("express-validator")
 const utilities = require("../utilities/")
 
 /* =========================
@@ -157,6 +157,54 @@ function attachInventoryFormValidation() {
 }
 
 
+/* ******************************************
+ * Check data and return errors to edit view
+ * ****************************************** */
+const checkUpdateData = async (req, res, next) => {
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body
+
+  let errors = validationResult(req)
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav()
+    const classificationSelect = await utilities.buildClassificationList(classification_id)
+    const itemName = `${inv_make} ${inv_model}`
+
+    res.render("inventory/edit-inventory", {
+      title: "Edit " + itemName,
+      nav,
+      errors: errors.array(),
+      classificationSelect,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+    })
+    return
+  }
+  next()
+}
+
+
 
 
 module.exports = {
@@ -164,4 +212,6 @@ module.exports = {
   inventoryRules,
   checkClassificationData,
   checkInventoryData,
+  attachInventoryFormValidation,
+  checkUpdateData,
 }

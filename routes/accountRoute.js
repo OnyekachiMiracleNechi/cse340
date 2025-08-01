@@ -11,9 +11,15 @@ const invValidate = require("../utilities/inventory-validation") // For inventor
 router.get("/login", utilities.handleErrors(accountController.buildLogin))
 router.get("/register", utilities.handleErrors(accountController.buildRegister))
 
+// Account management view (protected by login check)
+router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildAccount))
+
+
+
 // Inventory views
 router.get("/add-classification", utilities.handleErrors(invController.buildAddClassification))
 router.get("/add-inventory", utilities.handleErrors(invController.buildAddInventory))
+
 
 // Process registration
 router.post(

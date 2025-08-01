@@ -1,6 +1,7 @@
 /* ******************************************
  * Primary file to control the project.
  *******************************************/
+const cookieParser = require("cookie-parser")
 const express = require("express")
 const app = express()
 const expressLayouts = require("express-ejs-layouts")
@@ -49,6 +50,9 @@ app.use((req, res, next) => {
   res.locals.accountData = req.session.account
   next()
 })
+
+app.use(cookieParser())
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * Static Files
