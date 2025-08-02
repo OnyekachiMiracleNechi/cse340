@@ -29,6 +29,10 @@ router.get(
   utilities.handleErrors(invController.editInventoryView)
 )
 
+// Route to get the delete inventory view
+router.get("/delete/:inv_id", invController.buildDeleteView);
+
+
 
 // POST route to add a new classification
 router.post(
@@ -55,6 +59,13 @@ router.post(
   invValidate.checkInventoryData,  // validation error handler
   utilities.handleErrors(invController.updateInventory)
 )
+
+
+//Delete inventory item
+router.post(
+  "/delete",
+   invController.deleteInventoryItem);
+
 
 
 

@@ -157,7 +157,7 @@ invController.addInventory = async function (req, res) {
     )
 
     if (result) {
-      req.flash("success", "Inventory added successfully.")
+      req.flash("notice", "Inventory added successfully.")
       res.redirect("/inv/")
     } else {
       throw new Error("Failed to insert inventory.")
@@ -314,6 +314,59 @@ invController.updateInventory = async function (req, res) {
       inv_miles,
       inv_color
     })
+  }
+}
+
+
+/* ***************************
+ *  Build Delete Confirmation View
+ * ************************** */
+invController.buildDeleteView = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.params.inv_id) // Get inv_id from URL params
+    let nav = await utilities.getNav() // Build navigation
+    const itemData = await invModel.getInventoryById(inv_id) // Get item data from DB
+
+    // Build item name for title
+    const itemName = `${itemData.inv_make} ${itemData.inv_model}`
+
+    res.render("inventory/delete-confirm", {
+      title: `Delete ${itemName}`,
+      nav,
+      errors: null,
+      inv_id: itemData.inv_id,
+      inv_make: itemData.inv_make,
+      inv_model: itemData.inv_model,
+      inv_year: itemData.inv_year,
+      inv_price: itemData.inv_price
+    })
+  } catch (error) {
+    console.error("Error building delete view:", error)
+    next(error)
+  }
+}
+
+
+/* ***************************
+ *  Delete Inventory Item
+ * ************************** */
+invController.deleteInventoryItem = async function (req, res, next) {
+  try {
+    const inv_id = parseInt(req.body.inv_id) // Get inventory ID from form
+    const deleteResult = await invModel.deleteInventoryItem(inv_id) // Call model to delete
+
+    if (deleteResult.rowCount > 0) {
+      // ✅ Delete successful
+      req.flash("notice", "The vehicle was successfully deleted.")
+      res.redirect("/inv/") // Redirect to inventory management
+    } else {
+      // ❌ Delete failed
+      req.flash("notice", "Sorry, the delete failed.")
+      res.redirect(`/inv/delete/${inv_id}`) // Redirect back to confirmation page
+    }
+  } catch (error) {
+    console.error("Error deleting inventory item:", error)
+    next(error)
   }
 }
 

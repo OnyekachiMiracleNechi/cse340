@@ -136,6 +136,21 @@ async function updateInventory(
   }
 }
 
+
+/* ***************************
+ *  Delete Inventory Item
+ * ************************** */
+async function deleteInventoryItem(inv_id) {
+  try {
+    const sql = 'DELETE FROM inventory WHERE inv_id = $1'
+    const data = await pool.query(sql, [inv_id])
+    return data // rowCount will tell if it succeeded
+  } catch (error) {
+    throw new Error("Delete Inventory Error")
+  }
+}
+
+
 /* ***************************
  *  Export functions
  * ************************** */
@@ -145,5 +160,6 @@ module.exports = {
   getInventoryByClassificationId,
   addClassification,
   addInventory,
-  updateInventory, // ✅ New export
+  updateInventory, 
+  deleteInventoryItem, 
 }

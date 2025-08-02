@@ -1,4 +1,4 @@
-const form = document.querySelector("#updateForm")
+const form = document.querySelector("#editInventoryForm")
 if (form) {
   form.addEventListener("change", function () {
     const updateBtn = document.querySelector("button[type='submit']")
