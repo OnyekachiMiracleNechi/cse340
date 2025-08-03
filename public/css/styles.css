@@ -10,7 +10,7 @@
   --primary-color: #1E90FF;
   --secondary-color: #f5f5f5;
   --text-color: #222;
-  --accent-color: #ff4500;
+  --accent-color: #1e90ff;
 }
 
 /******* Base Styling ***************/
@@ -415,7 +415,7 @@ form button:hover {
 
 .hint {
   font-size: 0.9em;
-  color: #ff4500;
+  color: black;
   margin-top: 0.5em;
 }
 
