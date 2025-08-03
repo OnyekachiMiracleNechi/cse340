@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %></title>
+</head>
+<body>
+
+  <h1><%= title %></h1>
+
+  <!-- =======================
+       Flash / Validation Messages
+  ======================= -->
+  <% if (success && success.length > 0) { %>
+  <% success.forEach(msg => { %>
+    <div class="success"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+
+
+<% if (message && message.length > 0) { %>
+  <% message.forEach(msg => { %>
+    <div class="notice"><%= msg %></div>
+  <% }) %>
+<% } %>
+
+
+
+  <% if (errors && errors.length > 0) { %>
+  <ul class="error-list">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
+<% } %>
+
+  
+
+  <!-- =======================
+       FORM 1: Update Account Information
+  ======================= -->
+  
+  <form action="/account/update" method="post">
+    <!-- First Name -->
+    <label for="account_firstname">First Name</label>
+    <input type="text" id="account_firstname" name="account_firstname" required
+           value="<%= typeof account_firstname != 'undefined' ? account_firstname : '' %>">
+
+    <!-- Last Name -->
+    <label for="account_lastname">Last Name</label>
+    <input type="text" id="account_lastname" name="account_lastname" required
+           value="<%= typeof account_lastname != 'undefined' ? account_lastname : '' %>">
+
+    <!-- Email -->
+    <label for="account_email">Email</label>
+    <input type="email" id="account_email" name="account_email" required
+           value="<%= typeof account_email != 'undefined' ? account_email : '' %>">
+
+    <!-- Hidden Account ID -->
+    <input type="hidden" name="account_id" value="<%= account_id %>">
+
+    <!-- Submit -->
+    <button type="submit">Update Account</button>
+  </form>
+
+  <!-- =======================
+       FORM 2: Change Password
+  ======================= -->
+  <h2>Change Password</h2>
+  <form action="/account/update-password" method="post">
+    <p class="hint">
+      Enter a new password to change your current one.<br>
+      Password must be at least 12 characters and contain uppercase, lowercase, number, and special character.
+    </p>
+
+    <!-- New Password -->
+    <label for="account_password">New Password</label>
+    <input type="password" id="account_password" name="account_password" required>
+
+    <!-- Hidden Account ID -->
+    <input type="hidden" name="account_id" value="<%= account_id %>">
+
+    <!-- Submit -->
+    <button type="submit">Change Password</button>
+  </form>
+
+</body>
+</html>

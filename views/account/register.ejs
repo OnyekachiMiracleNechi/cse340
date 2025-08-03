@@ -8,11 +8,7 @@
   <% }) %>
 <% } %>
 
-<% if (errors && errors.length > 0) { %>
-  <% errors.forEach(msg => { %>
-    <div class="error"><%= msg %></div>
-  <% }) %>
-<% } %>
+
 
 <% if (message && message.length > 0) { %>
   <% message.forEach(msg => { %>
@@ -20,15 +16,16 @@
   <% }) %>
 <% } %>
 
-
-
-  <% if (errors) { %>
-  <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
- </ul>
+<% if (errors && errors.length > 0) { %>
+  <ul class="error-list">
+    <% errors.forEach(error => { %>
+      <li><%= error.msg %></li>
+    <% }) %>
+  </ul>
 <% } %>
+
+
+  
 
   <form action="/account/register" method="post">
   <label for="account_firstname">First Name</label>

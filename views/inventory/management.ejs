@@ -1,29 +1,30 @@
 <main class="inventory-container">
   <h1>Inventory Management</h1>
 
-  <% if (messages.notice) { %>
-  <div class="notice flash">
-    <% messages.notice.forEach(function(msg) { %>
-      <p><%= msg %></p>
-    <% }) %>
-  </div>
-<% } %>
+  <% if (notice && notice.length > 0) { %>
+    <div class="notice flash">
+      <% notice.forEach(function(msg) { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
 
-<% if (messages.success) { %>
-  <div class="success flash">
-    <% messages.success.forEach(function(msg) { %>
-      <p><%= msg %></p>
-    <% }) %>
-  </div>
-<% } %>
+  <% if (success && success.length > 0) { %>
+    <div class="success flash">
+      <% success.forEach(function(msg) { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
 
-<% if (messages.error) { %>
-  <div class="error flash">
-    <% messages.error.forEach(function(msg) { %>
-      <p><%= msg %></p>
-    <% }) %>
-  </div>
-<% } %>
+  <% if (errors && errors.length > 0) { %>
+    <div class="error flash">
+      <% errors.forEach(function(msg) { %>
+        <p><%= msg %></p>
+      <% }) %>
+    </div>
+  <% } %>
+
 
 
   <ul class="inventory-links">

@@ -45,6 +45,7 @@ app.use(flash())
 // Make flash messages and user session available in all views
 app.use((req, res, next) => {
   res.locals.message = req.flash("message")
+  res.locals.notice = req.flash("notice")
   res.locals.errors = req.flash("errors")
   res.locals.success = req.flash("success")
   res.locals.accountData = req.session.account

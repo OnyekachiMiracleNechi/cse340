@@ -47,8 +47,69 @@ async function getAccountByEmail (account_email) {
   }
 }
 
+
+
+/* ***************************
+ *  Get account by ID
+ * *************************** */
+async function getAccountById(account_id) {
+  try {
+    const sql = `SELECT account_id, account_firstname, account_lastname, account_email, account_type
+                 FROM account
+                 WHERE account_id = $1`
+    const data = await pool.query(sql, [account_id])
+    return data.rows[0]
+  } catch (error) {
+    console.error("getAccountById error", error)
+    throw error
+  }
+}
+
+/* ***************************
+ *  Update account information (firstname, lastname, email)
+ * *************************** */
+async function updateAccountInfo(account_id, firstname, lastname, email) {
+  try {
+    const sql = `UPDATE account
+                 SET account_firstname = $1,
+                     account_lastname = $2,
+                     account_email = $3
+                 WHERE account_id = $4
+                 RETURNING *`
+    const data = await pool.query(sql, [firstname, lastname, email, account_id])
+    return data.rows[0]
+  } catch (error) {
+    console.error("updateAccountInfo error", error)
+    throw error
+  }
+}
+
+/* ***************************
+ *  Update account password
+ * *************************** */
+async function updateAccountPassword(account_id, hashedPassword) {
+  try {
+    const sql = `UPDATE account
+                 SET account_password = $1
+                 WHERE account_id = $2
+                 RETURNING account_id`
+    const data = await pool.query(sql, [hashedPassword, account_id])
+    return data.rows[0]
+  } catch (error) {
+    console.error("updateAccountPassword error", error)
+    throw error
+  }
+}
+
+
+
+
+
 module.exports = { 
   registerAccount, 
   checkExistingEmail,
-  getAccountByEmail
+  getAccountByEmail,
+  getAccountById,
+  updateAccountInfo,
+  updateAccountPassword
  }

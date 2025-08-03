@@ -9,22 +9,21 @@
 
   <h1>Account Management</h1>
 
-  <% if (accountData) { %>
-    <p>Welcome, <%= accountData.account_firstname %> <%= accountData.account_lastname %>!</p>
-    <p>You are logged in as: <%= accountData.account_email %></p>
-    <p>Account type: <%= accountData.account_type %></p>
+  <% if (account_firstname) { %>
+    <h2>Welcome <%= account_firstname %></h2>
   <% } else { %>
-    <p>Welcome to your account.</p>
+    <h2>Welcome to your account</h2>
   <% } %>
 
+  <!-- Flash messages -->
   <% if (success && success.length > 0) { %>
     <% success.forEach(msg => { %>
       <div class="success"><%= msg %></div>
     <% }) %>
   <% } %>
 
-  <% if (message && message.length > 0) { %>
-    <% message.forEach(msg => { %>
+  <% if (notice && notice.length > 0) { %>
+    <% notice.forEach(msg => { %>
       <div class="notice"><%= msg %></div>
     <% }) %>
   <% } %>
@@ -37,10 +36,19 @@
     </ul>
   <% } %>
 
-  <ul>
-    <li><a href="/inv/add-classification">Add New Classification</a></li>
-    <li><a href="/inv/add-inventory">Add New Inventory</a></li>
-    <li><a href="/account/logout">Logout</a></li>
-  </ul>
+  <!-- Update account link for all users -->
+  <p>
+    <a href="/account/update/<%= account_id %>">Update Account Information</a>
+  </p>
+
+  <!-- Inventory management section for Employee/Admin only -->
+  <% if (account_type === 'Employee' || account_type === 'Admin') { %>
+    <h3>Inventory Management</h3>
+    <p><a href="/inv/">Manage Inventory</a></p>
+  <% } %>
+
+  <!-- Logout link -->
+  <p><a href="/account/logout">Logout</a></p>
+
 </body>
 </html>

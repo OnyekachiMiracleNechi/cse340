@@ -19,12 +19,18 @@
 
 
 
-<% if (message && message.length > 0) { %>
-  <% message.forEach(msg => { %>
+<% if (notice && notice.length > 0) { %>
+  <% notice.forEach(msg => { %>
     <div class="notice"><%= msg %></div>
   <% }) %>
 <% } %>
 
+
+<% if (message && message.length > 0) { %>
+  <% message.forEach(msg => { %>
+    <div class="message"><%= msg %></div>
+  <% }) %>
+<% } %>
 
 
   <% if (errors && errors.length > 0) { %>

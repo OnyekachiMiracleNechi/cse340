@@ -43,11 +43,54 @@ async function buildRegister(req, res, next) {
  * *************************** */
 async function buildAccount(req, res) {
   const nav = await utilities.getNav()
+  const { account_firstname, account_id, account_type } = res.locals.accountData
+
+  const messages = req.flash() // ✅ fetch all flash messages
+
   res.render("account/management", {
     title: "Account Management",
     nav,
+    messages, // ✅ pass to view
+    notice: messages.notice || [], // ✅ also pass notice array
     errors: null,
-    accountData: res.locals.accountData,
+    account_firstname,
+    account_id,
+    account_type
+  })
+}
+
+
+/* ***************************
+ *  Deliver Update Account Information View
+ *  Pre-fills form with current account data
+ * *************************** */
+async function buildUpdateAccountView(req, res) {
+  const nav = await utilities.getNav()
+  const messages = req.flash() // ✅ Capture any flash messages
+  const account_id = parseInt(req.params.account_id)
+
+  if (isNaN(account_id)) {
+    req.flash("error", "Invalid account ID.")
+    return res.redirect("/account/")
+  }
+
+  // Get account data from the model
+  const accountData = await accountModel.getAccountById(account_id)
+
+  if (!accountData) {
+    req.flash("error", "Account not found.")
+    return res.redirect("/account/")
+  }
+
+  res.render("account/update-account", {
+    title: "Update Account Information",
+    nav,
+    messages, // ✅ Pass flash messages to the view
+    errors: null,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email
   })
 }
 
@@ -146,10 +189,87 @@ async function accountLogin(req, res) {
   }
 }
 
+
+/* ***************************
+ *  Process Account Info Update
+ * *************************** */
+async function updateAccount(req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body
+
+  // Run the update
+  const updateResult = await accountModel.updateAccountInfo(
+    account_id,
+    account_firstname,
+    account_lastname,
+    account_email
+  )
+
+  if (updateResult) {
+    //  Set success message for next request
+    req.flash("success", "Account information updated successfully.")
+
+    //  Redirect to account management page so flash message will show
+    return res.redirect("/account/")
+  } else {
+    //  Failed update
+    req.flash("notice", "Sorry, the update failed.")
+    return res.redirect(`/account/update/${account_id}`)
+  }
+}
+
+
+/* ***************************
+ *  Process Password Change
+ * *************************** */
+async function updatePassword(req, res) {
+  const { account_id, account_password } = req.body
+
+  try {
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(account_password, 10)
+
+    // Update in DB
+    const updateResult = await accountModel.updateAccountPassword(account_id, hashedPassword)
+
+    if (updateResult) {
+      // Set success message
+      req.flash("success", "Password updated successfully.")
+
+      //  Redirect to account management so flash message is displayed
+      return res.redirect("/account/")
+    } else {
+      //  Update failed
+      req.flash("notice", "Password update failed.")
+      return res.redirect(`/account/update/${account_id}`)
+    }
+  } catch (error) {
+    console.error(error)
+    req.flash("notice", "Error updating password.")
+    return res.redirect(`/account/update/${account_id}`)
+  }
+}
+
+
+
+/* ***************************
+ *  Logout Account
+ * *************************** */
+async function logoutAccount(req, res) {
+  res.clearCookie("jwt")       // Delete JWT cookie
+  req.session.destroy(() => {  // Destroy session
+    res.redirect("/")          // Go back to homepage
+  })
+}
+
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   accountLogin,
-  buildAccount
+  buildAccount,
+  buildUpdateAccountView,
+  updateAccount,
+  updatePassword,
+  logoutAccount
 }

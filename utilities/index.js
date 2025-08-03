@@ -85,25 +85,34 @@ Util.buildClassificationGrid = async function(data){
 /* ****************************************
 * Middleware to check token validity
 **************************************** */
+
 Util.checkJWTToken = (req, res, next) => {
- if (req.cookies.jwt) {
-  jwt.verify(
-   req.cookies.jwt,
-   process.env.ACCESS_TOKEN_SECRET,
-   function (err, accountData) {
-    if (err) {
-     req.flash("Please log in")
-     res.clearCookie("jwt")
-     return res.redirect("/account/login")
-    }
-    res.locals.accountData = accountData
-    res.locals.loggedin = 1
+  // Always define defaults so EJS doesn't break
+  res.locals.loggedin = false
+  res.locals.account_firstname = null
+
+  if (req.cookies.jwt) {
+    jwt.verify(
+      req.cookies.jwt,
+      process.env.ACCESS_TOKEN_SECRET,
+      function (err, accountData) {
+        if (err) {
+          req.flash("Please log in")
+          res.clearCookie("jwt")
+          return res.redirect("/account/login")
+        }
+        res.locals.accountData = accountData
+        res.locals.loggedin = true
+        res.locals.account_firstname = accountData.account_firstname
+        next()
+      }
+    )
+  } else {
     next()
-   })
- } else {
-  next()
- }
+  }
 }
+
+
 
 
 /* ****************************************
@@ -117,6 +126,29 @@ Util.checkJWTToken = (req, res, next) => {
     return res.redirect("/account/login")
   }
  }
+
+
+
+
+/* ****************************************
+ *  Check Employee or Admin Access
+ *  Only allow access if logged in AND account_type is Employee or Admin
+ *  Redirect to login with a notice if not authorized
+ * **************************************** */
+Util.checkEmployeeOrAdmin = (req, res, next) => {
+  if (
+    res.locals.loggedin &&
+    (res.locals.accountData.account_type === "Employee" ||
+     res.locals.accountData.account_type === "Admin")
+  ) {
+    next()
+  } else {
+    req.flash("notice", "You do not have permission to access Add classification and Add inventory.")
+    return res.redirect("/account/login")
+  }
+}
+
+
 
 /* ****************************************
  * Middleware For Handling Errors
