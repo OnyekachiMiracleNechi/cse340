@@ -1,0 +1,31 @@
+
+
+<h1>My Favorites</h1>
+
+<!-- Success Message -->
+<% if (success && success.length > 0) { %>
+  <div class="notice success"><%= successMessage %></div>
+<% } %>
+
+<!-- Error Message -->
+<% if (errorMessage && errorMessage.length > 0) { %>
+  <div class="notice error"><%= errorMessage %></div>
+<% } %>
+
+<% if (favorites && favorites.length > 0) { %>
+  <ul>
+    <% favorites.forEach(item => { %>
+      <li>
+        <img src="<%= item.inv_image %>" alt="<%= item.inv_make %> <%= item.inv_model %>" style="width:150px;">
+        <strong><%= item.inv_year %> <%= item.inv_make %> <%= item.inv_model %></strong> - $<%= item.inv_price %>
+        <form action="/account/favorites/remove/<%= item.inv_id %>" method="post" style="display:inline;">
+          <button type="submit">Remove</button>
+        </form>
+      </li>
+    <% }) %>
+  </ul>
+<% } else { %>
+  <p>You have no favorites yet.</p>
+<% } %>
+
+

@@ -27,24 +27,38 @@ invController.buildByClassificationId = async function (req, res, next) {
 invController.buildDetailView = async function (req, res, next) {
   try {
     const inv_id = req.params.inv_id
-    const vehicle = await invModel.getInventoryById(inv_id)
+    let vehicle = await invModel.getInventoryById(inv_id)
 
-    if (!vehicle) {
+    // Handle case where the model returns an array
+    if (Array.isArray(vehicle) && vehicle.length > 0) {
+      vehicle = vehicle[0]
+    }
+
+    if (!vehicle || Object.keys(vehicle).length === 0) {
       throw new Error("Vehicle not found")
     }
 
     const nav = await utilities.getNav()
 
+    // ✅ Get flash messages once (reading twice clears them)
+    const successMsg = req.flash("success")[0] || null
+    const errorMsg = req.flash("error")[0] || null
+    const noticeMsg = req.flash("notice")[0] || null
+
     res.render("inventory/detail", {
-      title: `${vehicle.inv_make} ${vehicle.inv_model}`,
+      title: `${vehicle.inv_year} ${vehicle.inv_make} ${vehicle.inv_model}`,
       nav,
       vehicle,
+      success: successMsg,
+      error: errorMsg,
+      notice: noticeMsg
     })
   } catch (error) {
     console.error("Error building vehicle detail view:", error)
     next(error)
   }
 }
+
 
 /* ***************************
  *  ✅ Inventory management view

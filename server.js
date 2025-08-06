@@ -18,6 +18,7 @@ const static = require("./routes/static")
 const baseController = require("./controllers/baseController")
 const inventoryRoute = require("./routes/inventoryRoute")
 const accountRoute = require("./routes/accountRoute")
+const favoritesRoute = require("./routes/favoritesRoute")
 
 /* ***********************
  * Middleware
@@ -73,6 +74,8 @@ app.set("layout", "layouts/layout")
 app.get("/", utilities.handleErrors(baseController.buildHome))
 app.use("/inv", inventoryRoute)
 app.use("/account", accountRoute)
+
+app.use("/account/favorites", favoritesRoute)
 // app.use("/", static) // optional if you want to serve other static routes
 
 /* ***********************

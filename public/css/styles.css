@@ -427,3 +427,31 @@ footer {
   border-top: 2px solid var(--primary-color);
   margin-top: 2rem;
 }
+
+
+
+
+.notice {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.375rem;
+    font-size: 1rem;
+  }
+
+  .notice.success {
+    background-color: #155724; /* dark green for contrast */
+    color: #ffffff; /* white text */
+    border: 1px solid #0b3d2e;
+  }
+
+  .notice.error {
+    background-color: #721c24; /* dark red for contrast */
+    color: #ffffff; /* white text */
+    border: 1px solid #501417;
+  }
+
+  .notice {
+    background-color: #004085; /* dark blue for contrast */
+    color: #ffffff;
+    border: 1px solid #002752;
+  }

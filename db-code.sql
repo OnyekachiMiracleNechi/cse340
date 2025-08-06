@@ -270,3 +270,14 @@ WHERE account_email = 'happy@340.edu';
 UPDATE public.account
 SET account_type = 'Admin'
 WHERE account_email = 'manager@340.edu';
+
+
+
+-- 12. Favorites table to store user-vehicle relationships
+CREATE TABLE public.favorites (
+    favorite_id SERIAL PRIMARY KEY,
+    account_id INT NOT NULL REFERENCES public.account(account_id) ON DELETE CASCADE,
+    inv_id INT NOT NULL REFERENCES public.inventory(inv_id) ON DELETE CASCADE,
+    date_added TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (account_id, inv_id)
+);
